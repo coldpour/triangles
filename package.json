@@ -1,0 +1,18 @@
+{
+  "name": "svg-triangles",
+  "version": "0.0.1",
+  "description": "draw and animate svg triangles",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --ext js index.js",
+    "test": "nodemon --ext js --exec jasmine",
+    "svg": "reload -b --exts html,svg"
+  },
+  "author": "Mike Holm <coldpour@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.8.0",
+    "nodemon": "^1.12.1",
+    "reload": "^2.2.2"
+  }
+}
