@@ -35,10 +35,6 @@ function distanceTransform(brightness, radius, distance) {
   return compute.color(brightness, radius, compute.roundPlaces(0, compute.clamp(0, radius, distance)));
 }
 
-function translateByReference(point, reference) {
-  return {x: point.x - reference.x, y: point.y - reference.y};
-}
-
 function lightUp({start, end, theta, brightness, radius, distance, dur, velocity, slope}, triangle) {
   const {one, two, three, id} = triangle;
   const centroid = compute.centroid(one, two, three);
@@ -49,13 +45,11 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
   const brightest = compute.pointOnAndDistanceFromLine(start, end, centroid);
   const illuminationDistance = compute.pythagoreanA(brightest.distance, radius);
 
-  const translatedCentroid = translateByReference(centroid, start);
   const distanceStartToBrightest = compute.distance(start, brightest.point);
-  const distanceFromIlluminationToOrigin = distanceStartToBrightest - illuminationDistance;
-  const distanceFromExtinguishToOrigin = distanceStartToBrightest + illuminationDistance;
-  const illuminationPoint = {x: start.x + (Math.cos(theta) * distanceFromIlluminationToOrigin), y: start.y + (Math.sin(theta) * distanceFromIlluminationToOrigin)};
-  const extinguishPoint = {x: start.x + (Math.cos(theta) * distanceFromExtinguishToOrigin), y: start.y + (Math.sin(theta) * distanceFromExtinguishToOrigin)};
-  const illuminatedDistance = compute.distance(illuminationPoint, extinguishPoint);
+  const distanceFromStartToIlluminationPoint = distanceStartToBrightest - illuminationDistance;
+  const distanceFromStartToExtinguishPoint = distanceStartToBrightest + illuminationDistance;
+  const illuminationPoint = {x: start.x + (Math.cos(theta) * distanceFromStartToIlluminationPoint), y: start.y + (Math.sin(theta) * distanceFromStartToIlluminationPoint)};
+  const extinguishPoint = {x: start.x + (Math.cos(theta) * distanceFromStartToExtinguishPoint), y: start.y + (Math.sin(theta) * distanceFromStartToExtinguishPoint)};
 
   const points = [start, illuminationPoint, brightest.point, extinguishPoint, end]
         .sort((a, b) => a.y > b.y)
@@ -81,7 +75,7 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
 }
 
 function selectTrianglesReducer(acc, triangle) {
-  if([165].indexOf(triangle.id) !== -1) {
+  if([167].indexOf(triangle.id) !== -1) {
     return acc.concat(triangle);
   }
   return acc;
@@ -104,7 +98,6 @@ const lightPath = {
 };
 const triangles = triangleData
       // .reduce(selectTrianglesReducer, [])
-      // .map(log)
       .map(lightUp.bind(this, extendLight(lightPath)))
       // .map(log)
       .map(draw.triangle)

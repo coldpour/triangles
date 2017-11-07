@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --ext js index.js",
-    "test": "nodemon --ext js --exec jasmine",
+    "test": "nodemon --ext js --exec mocha",
     "svg": "reload --port 7070 --browser --exts html,svg"
   },
   "author": "Mike Holm <coldpour@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "jasmine": "^2.8.0",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
     "reload": "^2.2.2"
   }

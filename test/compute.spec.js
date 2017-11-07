@@ -162,6 +162,10 @@ const tests = [
         name: "fewer still",
         args: [[0, 1]],
         result: [0, 0.5, 1]
+      }, {
+        name: "specific case",
+        args: [[0, 0.09, 1]],
+        result: [0, 0.045, 0.5, 0.955, 1]
       }
     ]
   }, {
@@ -171,6 +175,10 @@ const tests = [
         name: "works",
         args: [["#000", "#fff", "#111"]],
         result: ["#000", "#fff", "#111", "#fff", "#000"]
+      }, {
+        name: "with just one",
+        args: [["#000"]],
+        result: ["#000"]
       }
     ]
   }

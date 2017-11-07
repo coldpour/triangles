@@ -113,21 +113,23 @@ function roundPlaces(places, value) {
 
 function timeMirror(times) {
   let init = times.map(t => t/2);
+
   for(let i=init.length-1; i--; ) {
-    const difference = init[i+1] - init[i];
-    init = init.concat(init[init.length-1] + difference);
+    const prev = init[i+1];
+    const curr = init[i];
+    const difference = prev - curr;
+    const last = init[init.length-1];
+    const added = roundPlaces(3, last + difference);
+
+    init = init.concat(added);
   }
   return init;
 }
 
 function colorMirror(colors) {
-  let init = colors.reduce((acc, c, i) => {
-    return i !== colors.length - 1 ? acc.concat(c) : acc;
-  }, []);
-  let reversed = colors.reduce((acc, c) => {
-    return [c].concat(acc);
-  }, []);
-  return init.concat(reversed);
+  let head = colors.slice(0, -1);
+  let reversed = colors.slice().reverse();
+  return head.concat(reversed);
 }
 
 module.exports = {
