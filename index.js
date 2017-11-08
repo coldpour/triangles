@@ -54,9 +54,11 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
   const points = [start, illuminationPoint, brightest.point, extinguishPoint, end]
         .sort((a, b) => a.y > b.y)
         .filter(p => p.y >= start.y && p.y <= end.y);
-  const color = compute.colorMirror(points.map(compute.distance.bind(this, centroid))
-        .map(distanceTransform.bind(this, brightness, radius)));
-  const keyTimes = compute.timeMirror(points.map(p => compute.roundPlaces(2, compute.lerp(compute.distance(start, p), 0, distance, 0, 1))));
+  const colors = points
+        .map(compute.distance.bind(this, centroid))
+        .map(distanceTransform.bind(this, brightness, radius));
+  const lastColor = colors[colors.length - 1];
+  const times = points.map(p => compute.roundPlaces(2, compute.lerp(compute.distance(start, p), 0, distance, 0, 1)));
 
   return {
     start,
@@ -65,8 +67,9 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
     two,
     three,
     dur,
-    color,
-    keyTimes,
+    fill: lastColor,
+    color: compute.colorMirror(colors),
+    keyTimes: compute.timeMirror(times),
     centroid,
     brightest,
     illuminationPoint,
@@ -125,7 +128,8 @@ const svgStr = svg.svg(
   {
     xmlns:"http://www.w3.org/2000/svg",
     viewBox: [xmin, ymin, width, height].join(" "),
-    width: "100%"
+    width,
+    height
   },
   // light,
   // draw.line(lightPath.start, lightPath.end, "red"),

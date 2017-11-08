@@ -27,9 +27,10 @@ function line(one, two, color) {
   );
 }
 
-function triangle({start, id, one, two, three, dur, color, keyTimes, centroid, brightest, illuminationPoint, extinguishPoint}) {
+function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centroid, brightest, illuminationPoint, extinguishPoint}) {
   let opts={}, children=[];
   const path = {
+    fill,
     d: `M${one.x},${one.y}L${two.x},${two.y}L${three.x},${three.y}z`
   };
 
