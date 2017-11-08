@@ -85,13 +85,13 @@ const {xmin, xmax, ymin, ymax, width, height} = compute.dimensions(triangleData)
 const lightPath = {
   start: {
     time: 0,
-    x: xmax-(width*.25),
-    y: ymin+(height*.25)
+    x: xmax-(width*.45),
+    y: ymin+(height*.15)
   },
   end: {
     time: 60,
-    x: xmax-(width*.1),
-    y: ymax
+    x: xmax,
+    y: ymax-(height*.25)
   },
   brightness: 75,
   radius: width*.70
