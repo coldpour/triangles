@@ -1,4 +1,4 @@
-const svg = require('./svg');
+const svg = require('jssvg');
 
 function animate(attributeName, {keyTimes, values, ...rest}) {
   let opts = {};

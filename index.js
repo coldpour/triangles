@@ -1,6 +1,6 @@
 const fs = require('fs');
 const triangleData = require('./src/triangles');
-const svg = require('./src/svg');
+const svg = require('jssvg');
 const compute = require('./src/compute');
 const draw = require('./src/draw');
 

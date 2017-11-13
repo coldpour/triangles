@@ -15,5 +15,8 @@
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
     "reload": "^2.2.2"
+  },
+  "dependencies": {
+    "jssvg": "0.0.1"
   }
 }
