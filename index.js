@@ -103,25 +103,6 @@ const triangles = triangleData
       // .map(log)
       .map(draw.triangle)
       .join("");
-const light = svg.circle(
-  {
-    cx: lightPath.end.x,
-    cy: lightPath.end.y,
-    r: lightPath.radius,
-    fill: "yellow",
-    opacity: "0.5"
-  },
-  draw.animate("cx", {values:[lightPath.start.x, lightPath.end.x], begin:lightPath.start.time, dur:lightPath.end.time}),
-  draw.animate("cy", {values:[lightPath.start.y, lightPath.end.y], begin:lightPath.start.time, dur:lightPath.end.time}));
-const lightCenter = svg.circle(
-  {
-    cx: lightPath.end.x,
-    cy: lightPath.end.y,
-    fill: "blue",
-    r: 5
-  },
-  draw.animate("cx", {values:[lightPath.start.x, lightPath.end.x], begin:lightPath.start.time, dur:lightPath.end.time}),
-  draw.animate("cy", {values:[lightPath.start.y, lightPath.end.y], begin:lightPath.start.time, dur:lightPath.end.time}));
 const svgStr = svg.svg(
   {
     xmlns:"http://www.w3.org/2000/svg",
@@ -129,7 +110,7 @@ const svgStr = svg.svg(
     width,
     height
   },
-  // light,
+  // draw.light(lightPath),
   // draw.line(lightPath.start, lightPath.end, "red"),
   // svg.symbol(
   //   {
@@ -137,7 +118,7 @@ const svgStr = svg.svg(
   //   },
     triangles
   // ),
-  // lightCenter
+  // draw.lightCenter(lightPath)
 );
 
 fs.writeFile("./gems.svg", svgStr, err => {

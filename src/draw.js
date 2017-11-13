@@ -63,8 +63,44 @@ function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centr
   return tri;
 }
 
+function animateCircle({start, end}) {
+  const begin = start.time;
+  const dur = end.time - start.time;
+
+  return [
+    animate("cx", {values:[start.x, end.x], begin, dur}),
+    animate("cy", {values:[start.y, end.y], begin, dur})
+  ];
+}
+
+function light(lightPath) {
+  return svg.circle(
+    {
+      cx: lightPath.end.x,
+      cy: lightPath.end.y,
+      r: lightPath.radius,
+      fill: "yellow",
+      opacity: "0.5"
+    },
+    ...animateCircle(lightPath));
+}
+
+function lightCenter(lightPath) {
+  return svg.circle(
+    {
+      cx: lightPath.end.x,
+      cy: lightPath.end.y,
+      fill: "blue",
+      r: 5
+    },
+    ...animateCircle(lightPath));
+}
+
 module.exports = {
   animate,
+  animateCircle,
+  light,
+  lightCenter,
   line,
   triangle
 };
