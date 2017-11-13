@@ -1,5 +1,7 @@
+const paratest = require('paratest');
+const expect = require('chai').expect;
+
 const compute = require('../src/compute');
-const paratest = require('./paratest');
 
 const tests = [
   {
@@ -184,4 +186,8 @@ const tests = [
   }
 ];
 
-paratest("compute", tests);
+paratest(
+  "compute",
+  tests,
+  (expected, actual) => expect(actual).to.deep.equal(expected)
+);
