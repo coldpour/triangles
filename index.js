@@ -22,7 +22,6 @@ function extendLight({start, end, brightness, radius}) {
     dur,
     distance,
     velocity,
-    slope,
     theta: Math.atan(slope)
   };
 }
@@ -35,10 +34,9 @@ function distanceTransform(brightness, radius, distance) {
   return compute.color(brightness, radius, compute.roundPlaces(0, compute.clamp(0, radius, distance)));
 }
 
-function lightUp({start, end, theta, brightness, radius, distance, dur, velocity, slope}, triangle) {
+function lightUp({start, end, theta, brightness, radius, distance, dur, velocity}, triangle) {
   const {one, two, three, id} = triangle;
   const centroid = compute.centroid(one, two, three);
-  const origin = {x: 0, y: 0};
   const startDistance = compute.distance(start, centroid);
   const endDistance = compute.distance(end, centroid);
 
