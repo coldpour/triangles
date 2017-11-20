@@ -4,11 +4,6 @@ const svg = require('jssvg');
 const compute = require('./src/compute');
 const draw = require('./src/draw');
 
-function log(props) {
-  console.log(props);
-  return props;
-}
-
 function extendLight({start, end, brightness, radius}) {
   const dur = end.time - start.time;
   const distance = compute.distance(start, end);
@@ -75,13 +70,6 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
   };
 }
 
-function selectTrianglesReducer(acc, triangle) {
-  if([167].indexOf(triangle.id) !== -1) {
-    return acc.concat(triangle);
-  }
-  return acc;
-}
-
 const {xmin, xmax, ymin, ymax, width, height} = compute.dimensions(triangleData);
 const lightPath = {
   start: {
@@ -97,12 +85,18 @@ const lightPath = {
   brightness: 75,
   radius: width*.70
 };
-const triangles = triangleData
-      // .reduce(selectTrianglesReducer, [])
-      .map(lightUp.bind(this, extendLight(lightPath)))
-      // .map(log)
-      .map(draw.triangle)
-      .join("");
+const extendedLight = extendLight(lightPath);
+
+function animateTriangles(renderFunc, keyFrameFunc) {
+  return triangleData.reduce((acc, triangle) => {
+    // if([167].indexOf(triangle.id) === -1) {
+    //   return acc;
+    // }
+
+    return acc + renderFunc(keyFrameFunc(triangle));
+  }, "");
+}
+
 const svgStr = svg.svg(
   {
     xmlns:"http://www.w3.org/2000/svg",
@@ -110,15 +104,10 @@ const svgStr = svg.svg(
     width,
     height
   },
-  // draw.light(lightPath),
-  // draw.line(lightPath.start, lightPath.end, "red"),
-  // svg.symbol(
-  //   {
-  //     id: "triangles"
-  //   },
-    triangles
-  // ),
-  // draw.lightCenter(lightPath)
+  draw.light(lightPath),
+  draw.line(lightPath.start, lightPath.end, "red"),
+  animateTriangles(draw.triangle, lightUp.bind(this, extendedLight))
+  , draw.lightCenter(lightPath)
 );
 
 fs.writeFile("./gems.svg", svgStr, err => {
