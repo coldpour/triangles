@@ -4,21 +4,14 @@ const svg = require('jssvg');
 const compute = require('./src/compute');
 const draw = require('./src/draw');
 
-function extendLight({start, end, brightness, radius}) {
-  const dur = end.time - start.time;
-  const distance = compute.distance(start, end);
-  const velocity = dur / distance;
-  const slope = (end.y - start.y) / (end.x - start.x);
-  return {
-    start,
-    end,
-    brightness,
-    radius,
-    dur,
-    distance,
-    velocity,
-    theta: Math.atan(slope)
-  };
+function animateTriangles(renderFunc, keyFrameFunc) {
+  return triangleData.reduce((acc, triangle) => {
+    // if([167].indexOf(triangle.id) === -1) {
+    //   return acc;
+    // }
+
+    return acc + renderFunc(keyFrameFunc(triangle));
+  }, "");
 }
 
 function timeTransform(time, dur) {
@@ -71,31 +64,31 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
 }
 
 const {xmin, xmax, ymin, ymax, width, height} = compute.dimensions(triangleData);
-const lightPath = {
-  start: {
+
+const lightPath = ((
+  start = {
     time: 0,
     x: xmin+(width*.65),
     y: ymin+(height*.15)
   },
-  end: {
+  end = {
     time: 60,
     x: xmin+(width),
     y: ymin+(height*.75)
   },
+  dur = end.time - start.time,
+  distance = compute.distance(start, end),
+  slope = (end.y - start.y) / (end.x - start.x),
+) => ({
   brightness: 75,
-  radius: width*.70
-};
-const extendedLight = extendLight(lightPath);
-
-function animateTriangles(renderFunc, keyFrameFunc) {
-  return triangleData.reduce((acc, triangle) => {
-    // if([167].indexOf(triangle.id) === -1) {
-    //   return acc;
-    // }
-
-    return acc + renderFunc(keyFrameFunc(triangle));
-  }, "");
-}
+  radius: width*.70,
+  distance,
+  dur,
+  end,
+  start,
+  theta: Math.atan(slope),
+  velocity: dur / distance
+}))();
 
 const svgStr = svg.svg(
   {
@@ -106,7 +99,7 @@ const svgStr = svg.svg(
   },
   draw.light(lightPath),
   draw.line(lightPath.start, lightPath.end, "red"),
-  animateTriangles(draw.triangle, lightUp.bind(this, extendedLight))
+  animateTriangles(draw.triangle, lightUp.bind(this, lightPath))
   , draw.lightCenter(lightPath)
 );
 
