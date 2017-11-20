@@ -22,6 +22,18 @@ const tests = [
         result: '<circle cx="4" cy="5" fill="blue" r="5"><animate begin="0" dur="3" attributeName="cx" repeatCount="indefinite" values="1;4"/><animate begin="0" dur="3" attributeName="cy" repeatCount="indefinite" values="2;5"/></circle>'
       }
     ]
+  }, {
+    subject: draw.animateCircle,
+    cases: [
+      {
+        name: "works",
+        args: [{start:{time:0,x:1,y:2},end:{time:3,x:4,y:5}}],
+        result: [
+          '<animate begin="0" dur="3" attributeName="cx" repeatCount="indefinite" values="1;4"/>',
+          '<animate begin="0" dur="3" attributeName="cy" repeatCount="indefinite" values="2;5"/>'
+        ]
+      }
+    ]
   }
 ];
 

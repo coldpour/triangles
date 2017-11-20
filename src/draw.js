@@ -64,13 +64,13 @@ function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centr
 }
 
 function animateCircle({start, end}) {
-  const begin = start.time;
-  const dur = end.time - start.time;
-
-  return [
-    animate("cx", {values:[start.x, end.x], begin, dur}),
-    animate("cy", {values:[start.y, end.y], begin, dur})
-  ];
+  return ['x', 'y'].map((c) => (
+    animate(`c${c}`, {
+      values: [start[c], end[c]],
+      begin: start.time,
+      dur: end.time - start.time
+    })
+  ));
 }
 
 function light(lightPath) {
