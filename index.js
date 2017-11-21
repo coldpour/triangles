@@ -6,9 +6,12 @@ const draw = require('./src/draw');
 
 function animateTriangles(renderFunc, keyFrameFunc) {
   return triangleData.reduce((acc, triangle) => {
-    // if([167].indexOf(triangle.id) === -1) {
-    //   return acc;
-    // }
+    //160, 161, 169 - misbehaving illPt
+    //165 - brightest before start
+    //149 - misbehaving extPt
+    if([149].indexOf(triangle.id) === -1) {
+      return acc;
+    }
 
     return acc + renderFunc(keyFrameFunc(triangle));
   }, "");
@@ -18,15 +21,16 @@ function timeTransform(time, dur) {
   return compute.roundPlaces(2, compute.clamp(0, 1, time/dur));
 }
 
-function distanceTransform(brightness, radius, distance) {
-  return compute.color(brightness, radius, compute.roundPlaces(0, compute.clamp(0, radius, distance)));
+function colorTransform(brightness, radius, centroid, point) {
+  const unclampedDistance = compute.distance(centroid, point);
+  const unroundedDistance = compute.clamp(0, radius, unclampedDistance);
+  const distance = compute.roundPlaces(0, unroundedDistance);
+  return compute.color(brightness, radius, distance);
 }
 
 function lightUp({start, end, theta, brightness, radius, distance, dur, velocity}, triangle) {
   const {one, two, three, id} = triangle;
   const centroid = compute.centroid(one, two, three);
-  const startDistance = compute.distance(start, centroid);
-  const endDistance = compute.distance(end, centroid);
 
   const brightest = compute.pointOnAndDistanceFromLine(start, end, centroid);
   const illuminationDistance = compute.pythagoreanA(brightest.distance, radius);
@@ -38,11 +42,8 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
   const extinguishPoint = {x: start.x + (Math.cos(theta) * distanceFromStartToExtinguishPoint), y: start.y + (Math.sin(theta) * distanceFromStartToExtinguishPoint)};
 
   const points = [start, illuminationPoint, brightest.point, extinguishPoint, end]
-        .sort((a, b) => a.y > b.y)
         .filter(p => p.y >= start.y && p.y <= end.y);
-  const colors = points
-        .map(compute.distance.bind(this, centroid))
-        .map(distanceTransform.bind(this, brightness, radius));
+  const colors = points.map(colorTransform.bind(this, brightness, radius, centroid));
   const lastColor = colors[colors.length - 1];
   const times = points.map(p => compute.roundPlaces(2, compute.lerp(compute.distance(start, p), 0, distance, 0, 1)));
 

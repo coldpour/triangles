@@ -21,6 +21,14 @@ function lerp(value, low1, high1, low2, high2) {
   return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
 }
 
+function allSame(str) {
+  let same = true;
+  for(let i=0; same && i<str.length; i++) {
+    same = str[i] === str[0];
+  }
+  return same;
+}
+
 function padColor(str) {
   let out = "";
   const padded = 1 === str.length ? `0${str}` : str;
@@ -29,12 +37,7 @@ function padColor(str) {
     out += padded;
   }
 
-  let allSame = true;
-  for(let i=0; allSame && i<out.length; i++) {
-    allSame = out[i] === out[0];
-  }
-
-  return allSame ? `#${out.substr(0,3)}` : `#${out}`;
+  return `#${allSame(out) ? out.substr(0,3) : out}`;
 }
 
 function color(maxBrightness, diffusionRadius, distance) {
@@ -133,6 +136,7 @@ function colorMirror(colors) {
 }
 
 module.exports = {
+  allSame,
   centroid,
   clamp,
   color,

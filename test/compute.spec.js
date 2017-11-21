@@ -183,6 +183,19 @@ const tests = [
         result: ["#000"]
       }
     ]
+  }, {
+    subject: compute.allSame,
+    cases: [
+      {
+        name: "right",
+        args: ["aaaaaaaaaa"],
+        result: true
+      }, {
+        name: "wrong",
+        args: ["#000"],
+        result: false
+      }
+    ]
   }
 ];
 
