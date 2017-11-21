@@ -9,9 +9,9 @@ function animateTriangles(renderFunc, keyFrameFunc) {
     //160, 161, 169 - misbehaving illPt
     //165 - brightest before start
     //149 - misbehaving extPt
-    if([149].indexOf(triangle.id) === -1) {
-      return acc;
-    }
+    // if([161].indexOf(triangle.id) === -1) {
+    //   return acc;
+    // }
 
     return acc + renderFunc(keyFrameFunc(triangle));
   }, "");
@@ -36,10 +36,10 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
   const illuminationDistance = compute.pythagoreanA(brightest.distance, radius);
 
   const distanceStartToBrightest = compute.distance(start, brightest.point);
-  const distanceFromStartToIlluminationPoint = distanceStartToBrightest - illuminationDistance;
-  const distanceFromStartToExtinguishPoint = distanceStartToBrightest + illuminationDistance;
-  const illuminationPoint = {x: start.x + (Math.cos(theta) * distanceFromStartToIlluminationPoint), y: start.y + (Math.sin(theta) * distanceFromStartToIlluminationPoint)};
-  const extinguishPoint = {x: start.x + (Math.cos(theta) * distanceFromStartToExtinguishPoint), y: start.y + (Math.sin(theta) * distanceFromStartToExtinguishPoint)};
+  const dx = Math.cos(theta) * illuminationDistance;
+  const dy = Math.sin(theta) * illuminationDistance;
+  const illuminationPoint = {x: brightest.point.x - dx, y: brightest.point.y - dy};
+  const extinguishPoint = {x: brightest.point.x + dx, y: brightest.point.y + dy};
 
   const points = [start, illuminationPoint, brightest.point, extinguishPoint, end]
         .filter(p => p.y >= start.y && p.y <= end.y);

@@ -55,12 +55,12 @@ function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centr
     opts = {fill: color};
   }
   const tri = svg.path(Object.assign(opts, path), ...children);
-  const ill = line(centroid, illuminationPoint, "green");
-  const ext = line(centroid, extinguishPoint, "cyan");
-  const proj = line(centroid, brightest.point, "orange");
-  const dist = line(start, brightest.point, "purple");
-  return [tri, ill, ext, proj, dist].join("");
-  // return tri;
+  // const ill = line(centroid, illuminationPoint, "green");
+  // const ext = line(centroid, extinguishPoint, "cyan");
+  // const proj = line(centroid, brightest.point, "orange");
+  // const dist = line(start, brightest.point, "purple");
+  // return [tri, ill, ext, proj, dist].join("");
+  return tri;
 }
 
 function animateCircle({start, end}) {
