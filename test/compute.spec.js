@@ -197,26 +197,89 @@ const tests = [
       }
     ]
   }, {
-    subject: compute.keypoints,
+    subject: compute.slope,
+    cases: [
+      {
+        name: "up",
+        args: [{x:500, y:0},{x:1000, y:700}],
+        result: 1.4
+      }, {
+        name: "down",
+        args: [{x:0, y:700},{x:500, y:0}],
+        result: -1.4
+      }, {
+        name: "vertical up",
+        args: [{x:0, y:0},{x:0, y:100}],
+        result: Infinity
+      }, {
+        name: "vertical down",
+        args: [{x:0, y:100},{x:0, y:0}],
+        result: -Infinity
+      }, {
+        name: "horizontal right",
+        args: [{x:0, y:0},{x:500, y:0}],
+        result: 0
+      }, {
+        name: "horizontal left",
+        args: [{x:100, y:0},{x:0, y:0}],
+        result: -0
+      }
+    ]
+  }, {
+    subject: compute.surroundingPoints,
     cases: [
       {
         name: "works",
-        args: [{
-          start:{x:0,y:0},
-          end:{x:10,y:10},
-          theta:Math.atan(1),
-          radius:1
-        }, {
-          one:{x:7,y:5},
-          two:{x:4,y:6},
-          three:{x:6,y:4}
-        }],
+        args: [{x:0, y:0}, 5, 4/3],
         result: {
-          illuminationPoint: {x:5.002054219819065,y:5.002054219819065},
-          peak: {x:5.5,y:5.5},
-          extinguishPoint: {x:5.997945780180935,y:5.997945780180935},
-          centroid: {x:6,y:5}
+          negative: {
+            x: -3,
+            y: -4
+          },
+          positive: {
+            x: 3,
+            y: 4
+          }
         }
+      }
+    ]
+  }, {
+    subject: compute.pythagoreanA,
+    cases: [
+      {
+        name: "get A",
+        args: [4, 5],
+        result: 3
+      }, {
+        name: "get B",
+        args: [3, 5],
+        result: 4
+      }, {
+        name: "C first",
+        args: [5, 3],
+        result: 4
+      }
+    ]
+  }, {
+    subject: compute.rise,
+    cases: [
+      {
+        name: "works",
+        args: [5, (4/3)],
+        result: 4
+      }, {
+        name: "works",
+        args: [10, 1.0069419071976617],
+        result: 7.0954838197844055
+      }
+    ]
+  }, {
+    subject: compute.run,
+    cases: [
+      {
+        name: "works",
+        args: [5, (4/3)],
+        result: 3
       }
     ]
   }

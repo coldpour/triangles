@@ -17,10 +17,6 @@ function animateTriangles(renderFunc, keyFrameFunc) {
   }, "");
 }
 
-function timeTransform(time, dur) {
-  return compute.roundPlaces(2, compute.clamp(0, 1, time/dur));
-}
-
 function colorTransform(brightness, radius, centroid, point) {
   const unclampedDistance = compute.distance(centroid, point);
   const unroundedDistance = compute.clamp(0, radius, unclampedDistance);
@@ -28,14 +24,23 @@ function colorTransform(brightness, radius, centroid, point) {
   return compute.color(brightness, radius, distance);
 }
 
-function lightUp({start, end, theta, brightness, radius, distance, dur, velocity}, triangle) {
-  const {one, two, three, id} = triangle;
-  const {illuminationPoint, peak, extinguishPoint, centroid} = compute.keypoints({start, end, radius, theta}, triangle);
-  const keyframes = [start, illuminationPoint, peak, extinguishPoint].filter(p => p.y >= start.y && p.y <= end.y);
+function timeTransform(start, distance, point) {
+  const unlerpedDistance = compute.distance(start, point);
+  const unroundedTime = compute.lerp(unlerpedDistance, 0, distance, 0, 1);
+  return compute.roundPlaces(2, unroundedTime);
+}
 
-  const colors = keyframes.map(colorTransform.bind(this, brightness, radius, centroid));
+function lightUp({start, end, slope, brightness, radius, distance, dur}, triangle) {
+  const {one, two, three, id} = triangle;
+  const centroid = compute.centroid(one, two, three);
+  const {point: peak, distance: peakDistance} = compute.pointOnAndDistanceFromLine(start, end, centroid);
+  const illuminationDistance = compute.pythagoreanA(peakDistance, radius);
+  const {negative: illuminationPoint, positive: extinguishPoint} = compute.surroundingPoints(peak, illuminationDistance, slope);
+  const keypoints = [start, illuminationPoint, peak, extinguishPoint, end].filter(p => p.y >= start.y && p.y <= end.y);
+
+  const colors = keypoints.map(colorTransform.bind(this, brightness, radius, centroid));
   const lastColor = colors[colors.length - 1];
-  const times = keyframes.map(p => compute.roundPlaces(2, compute.lerp(compute.distance(start, p), 0, distance, 0, 1)));
+  const times = keypoints.map(timeTransform.bind(this, start, distance));
 
   return {
     start,
@@ -69,7 +74,6 @@ const lightPath = ((
   },
   dur = end.time - start.time,
   distance = compute.distance(start, end),
-  slope = (end.y - start.y) / (end.x - start.x),
 ) => ({
   brightness: 75,
   radius: width*.70,
@@ -77,8 +81,7 @@ const lightPath = ((
   dur,
   end,
   start,
-  theta: Math.atan(slope),
-  velocity: dur / distance
+  slope: compute.slope(start, end)
 }))();
 
 const svgStr = svg.svg(

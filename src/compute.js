@@ -56,6 +56,22 @@ function pythagoreanA(b, c) {
   return Math.abs(c*c - b*b) ** (1/2);
 }
 
+function rise(distance, slope) {
+  // a*a + b*b = c*c
+  // c = distance
+  // a = b/slope
+  // b/slope*b/slope + b*b = distance*distance
+  return Math.sqrt((distance ** 2) / ((1 / (slope ** 2)) + 1));
+}
+
+function run(distance, slope) {
+  // a*a + b*b = c*c
+  // c = distance
+  // b = slope * a
+  // a*a + slope*a*slope*a = distance*distance
+  return Math.sqrt((distance ** 2) / (1 + (slope ** 2)));
+}
+
 function minDistanceFromReference(points, referencePoint) {
   const distanceFromReference = distance.bind(this, referencePoint),
         distances = points.map(distanceFromReference);
@@ -135,21 +151,17 @@ function colorMirror(colors) {
   return head.concat(reversed);
 }
 
-function keypoints({start, end, theta, radius}, {one, two, three}) {
-  const center = centroid(one, two, three);
-  const {point: peak, distance: peakDistance} = pointOnAndDistanceFromLine(start, end, center);
-  const illuminationDistance = pythagoreanA(peakDistance, radius);
+function slope({x: x1, y: y1}, {x: x2, y: y2}) {
+  return (y2 - y1) / (x2 - x1);
+}
 
-  const dx = Math.cos(theta) * illuminationDistance;
-  const dy = Math.sin(theta) * illuminationDistance;
-  const illuminationPoint = {x: peak.x - dx, y: peak.y - dy};
-  const extinguishPoint = {x: peak.x + dx, y: peak.y + dy};
+function surroundingPoints({x, y}, distance, slope) {
+  const dx = run(distance, slope);
+  const dy = rise(distance, slope);
 
   return {
-    centroid: center,
-    illuminationPoint,
-    peak,
-    extinguishPoint
+    negative: {x: x - dx, y: y - dy},
+    positive: {x: x + dx, y: y + dy}
   };
 }
 
@@ -162,13 +174,16 @@ module.exports = {
   dimensions,
   distance,
   lerp,
-  keypoints,
+  surroundingPoints,
   padColor,
   pointOnAndDistanceFromLine,
   pythagoreanA,
   minDistanceFromReference,
+  run,
+  rise,
   rotatePoint90Anti,
   rotateTriangle90Anti,
   roundPlaces,
+  slope,
   timeMirror
 };

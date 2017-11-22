@@ -27,7 +27,7 @@ function line(one, two, color) {
   );
 }
 
-function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centroid, brightest, illuminationPoint, extinguishPoint}) {
+function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centroid, peak, illuminationPoint, extinguishPoint}) {
   let opts={}, children=[];
   const path = {
     fill,
@@ -57,8 +57,8 @@ function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centr
   const tri = svg.path(Object.assign(opts, path), ...children);
   // const ill = line(centroid, illuminationPoint, "green");
   // const ext = line(centroid, extinguishPoint, "cyan");
-  // const proj = line(centroid, brightest.point, "orange");
-  // const dist = line(start, brightest.point, "purple");
+  // const proj = line(centroid, peak, "orange");
+  // const dist = line(start, peak, "purple");
   // return [tri, ill, ext, proj, dist].join("");
   return tri;
 }
