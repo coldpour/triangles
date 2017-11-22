@@ -30,22 +30,12 @@ function colorTransform(brightness, radius, centroid, point) {
 
 function lightUp({start, end, theta, brightness, radius, distance, dur, velocity}, triangle) {
   const {one, two, three, id} = triangle;
-  const centroid = compute.centroid(one, two, three);
+  const {illuminationPoint, peak, extinguishPoint, centroid} = compute.keypoints({start, end, radius, theta}, triangle);
+  const keyframes = [start, illuminationPoint, peak, extinguishPoint].filter(p => p.y >= start.y && p.y <= end.y);
 
-  const brightest = compute.pointOnAndDistanceFromLine(start, end, centroid);
-  const illuminationDistance = compute.pythagoreanA(brightest.distance, radius);
-
-  const distanceStartToBrightest = compute.distance(start, brightest.point);
-  const dx = Math.cos(theta) * illuminationDistance;
-  const dy = Math.sin(theta) * illuminationDistance;
-  const illuminationPoint = {x: brightest.point.x - dx, y: brightest.point.y - dy};
-  const extinguishPoint = {x: brightest.point.x + dx, y: brightest.point.y + dy};
-
-  const points = [start, illuminationPoint, brightest.point, extinguishPoint, end]
-        .filter(p => p.y >= start.y && p.y <= end.y);
-  const colors = points.map(colorTransform.bind(this, brightness, radius, centroid));
+  const colors = keyframes.map(colorTransform.bind(this, brightness, radius, centroid));
   const lastColor = colors[colors.length - 1];
-  const times = points.map(p => compute.roundPlaces(2, compute.lerp(compute.distance(start, p), 0, distance, 0, 1)));
+  const times = keyframes.map(p => compute.roundPlaces(2, compute.lerp(compute.distance(start, p), 0, distance, 0, 1)));
 
   return {
     start,
@@ -58,7 +48,7 @@ function lightUp({start, end, theta, brightness, radius, distance, dur, velocity
     color: compute.colorMirror(colors),
     keyTimes: compute.timeMirror(times),
     centroid,
-    brightest,
+    peak,
     illuminationPoint,
     extinguishPoint
   };

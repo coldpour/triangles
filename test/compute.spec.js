@@ -196,6 +196,29 @@ const tests = [
         result: false
       }
     ]
+  }, {
+    subject: compute.keypoints,
+    cases: [
+      {
+        name: "works",
+        args: [{
+          start:{x:0,y:0},
+          end:{x:10,y:10},
+          theta:Math.atan(1),
+          radius:1
+        }, {
+          one:{x:7,y:5},
+          two:{x:4,y:6},
+          three:{x:6,y:4}
+        }],
+        result: {
+          illuminationPoint: {x:5.002054219819065,y:5.002054219819065},
+          peak: {x:5.5,y:5.5},
+          extinguishPoint: {x:5.997945780180935,y:5.997945780180935},
+          centroid: {x:6,y:5}
+        }
+      }
+    ]
   }
 ];
 

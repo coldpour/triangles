@@ -10,7 +10,7 @@ const tests = [
       {
         name: "works",
         args: [{start:{time:0,x:1,y:2},end:{time:3,x:4,y:5},radius:6}],
-        result: '<circle cx="4" cy="5" r="6" fill="yellow" opacity="0.5"><animate begin="0" dur="3" attributeName="cx" repeatCount="indefinite" values="1;4"/><animate begin="0" dur="3" attributeName="cy" repeatCount="indefinite" values="2;5"/></circle>'
+        result: '<circle cx="4" cy="5" r="6" fill="yellow" opacity="0.5"><animate begin="0" dur="3" attributeName="cx" repeatCount="indefinite" values="1;4;1"/><animate begin="0" dur="3" attributeName="cy" repeatCount="indefinite" values="2;5;2"/></circle>'
       }
     ]
   }, {
@@ -19,7 +19,7 @@ const tests = [
       {
         name: "works",
         args: [{start:{time:0,x:1,y:2},end:{time:3,x:4,y:5},radius:6}],
-        result: '<circle cx="4" cy="5" fill="blue" r="5"><animate begin="0" dur="3" attributeName="cx" repeatCount="indefinite" values="1;4"/><animate begin="0" dur="3" attributeName="cy" repeatCount="indefinite" values="2;5"/></circle>'
+        result: '<circle cx="4" cy="5" fill="blue" r="5"><animate begin="0" dur="3" attributeName="cx" repeatCount="indefinite" values="1;4;1"/><animate begin="0" dur="3" attributeName="cy" repeatCount="indefinite" values="2;5;2"/></circle>'
       }
     ]
   }, {
@@ -29,8 +29,8 @@ const tests = [
         name: "works",
         args: [{start:{time:0,x:1,y:2},end:{time:3,x:4,y:5}}],
         result: [
-          '<animate begin="0" dur="3" attributeName="cx" repeatCount="indefinite" values="1;4"/>',
-          '<animate begin="0" dur="3" attributeName="cy" repeatCount="indefinite" values="2;5"/>'
+          '<animate begin="0" dur="3" attributeName="cx" repeatCount="indefinite" values="1;4;1"/>',
+          '<animate begin="0" dur="3" attributeName="cy" repeatCount="indefinite" values="2;5;2"/>'
         ]
       }
     ]

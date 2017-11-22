@@ -135,6 +135,24 @@ function colorMirror(colors) {
   return head.concat(reversed);
 }
 
+function keypoints({start, end, theta, radius}, {one, two, three}) {
+  const center = centroid(one, two, three);
+  const {point: peak, distance: peakDistance} = pointOnAndDistanceFromLine(start, end, center);
+  const illuminationDistance = pythagoreanA(peakDistance, radius);
+
+  const dx = Math.cos(theta) * illuminationDistance;
+  const dy = Math.sin(theta) * illuminationDistance;
+  const illuminationPoint = {x: peak.x - dx, y: peak.y - dy};
+  const extinguishPoint = {x: peak.x + dx, y: peak.y + dy};
+
+  return {
+    centroid: center,
+    illuminationPoint,
+    peak,
+    extinguishPoint
+  };
+}
+
 module.exports = {
   allSame,
   centroid,
@@ -144,6 +162,7 @@ module.exports = {
   dimensions,
   distance,
   lerp,
+  keypoints,
   padColor,
   pointOnAndDistanceFromLine,
   pythagoreanA,
