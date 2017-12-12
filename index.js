@@ -33,7 +33,8 @@ function timeTransform(start, distance, point) {
 function lightUp({start, end, slope, brightness, radius, distance, dur}, triangle) {
   const {one, two, three, id} = triangle;
   const centroid = compute.centroid(one, two, three);
-  const {point: peak, distance: peakDistance} = compute.pointOnAndDistanceFromLine(start, end, centroid);
+  const peak = compute.pointOnLine(start, end, centroid);
+  const peakDistance = compute.roundPlaces(2, compute.distance(peak, centroid));
   const illuminationDistance = compute.pythagoreanA(peakDistance, radius);
   const {negative: illuminationPoint, positive: extinguishPoint} = compute.surroundingPoints(peak, illuminationDistance, slope);
   const keypoints = [start, illuminationPoint, peak, extinguishPoint, end].filter(p => p.y >= start.y && p.y <= end.y);

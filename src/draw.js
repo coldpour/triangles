@@ -14,7 +14,7 @@ function animate(attributeName, {keyTimes, values, ...rest}) {
       keyTimes: keyTimes.join(";")
     };
   }
-  const str =  svg.animate(Object.assign(opts, init));
+  const str = svg.animate(Object.assign(opts, init));
   return str;
 }
 
