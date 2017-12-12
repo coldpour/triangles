@@ -56,25 +56,16 @@ const tests = [
       }
     ]
   }, {
-    subject: compute.pointOnAndDistanceFromLine,
+    subject: compute.pointOnLine,
     cases: [
       {
         name: "works",
         args: [{x:0, y:0}, {x:2, y:0}, {x:1, y:1}],
-        result: {point:{x:1, y:0}, distance:1}
+        result: {x:1, y:0}
       }, {
         name: "when point is outside segment",
         args: [{x:0, y:0}, {x:2, y:0}, {x:3, y:1}],
-        result: {point:{x:3, y:0}, distance:1}
-      }
-    ]
-  }, {
-    subject: compute.minDistanceFromReference,
-    cases: [
-      {
-        name: "works",
-        args: [[{x:3,y:0}, {x:5, y:5}], {x:0,y:0}],
-        result: 3
+        result: {x:3, y:0}
       }
     ]
   }, {
