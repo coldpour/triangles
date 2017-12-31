@@ -40,23 +40,15 @@ function lightUp({start, end, slope, brightness, radius, distance, dur}, triangl
   const keypoints = [start, illuminationPoint, peak, extinguishPoint, end].filter(p => p.y >= start.y && p.y <= end.y);
 
   const colors = keypoints.map(colorTransform.bind(this, brightness, radius, centroid));
-  const lastColor = colors[colors.length - 1];
   const times = keypoints.map(timeTransform.bind(this, start, distance));
 
   return {
-    start,
-    id,
     one,
     two,
     three,
     dur,
-    fill: lastColor,
     color: compute.colorMirror(colors),
-    keyTimes: compute.timeMirror(times),
-    centroid,
-    peak,
-    illuminationPoint,
-    extinguishPoint
+    keyTimes: compute.timeMirror(times)
   };
 }
 
@@ -92,10 +84,10 @@ const svgStr = svg.svg(
     width,
     height
   },
-  draw.light(lightPath),
-  draw.line(lightPath.start, lightPath.end, "red"),
+  // draw.light(lightPath),
+  // draw.line(lightPath.start, lightPath.end, "red"),
   animateTriangles(draw.triangle, lightUp.bind(this, lightPath))
-  , draw.lightCenter(lightPath)
+  // , draw.lightCenter(lightPath)
 );
 
 fs.writeFile("./gems.svg", svgStr, err => {

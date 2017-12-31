@@ -27,10 +27,9 @@ function line(one, two, color) {
   );
 }
 
-function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centroid, peak, illuminationPoint, extinguishPoint}) {
+function triangle({one, two, three, dur, color, keyTimes}) {
   let opts={}, children=[];
   const path = {
-    fill,
     d: `M${one.x},${one.y}L${two.x},${two.y}L${three.x},${three.y}z`
   };
 
@@ -38,29 +37,17 @@ function triangle({start, fill, id, one, two, three, dur, color, keyTimes, centr
     if(color.every((c, i, a) => c === a[0])) {
       opts = {fill: color[0], stroke: color[0]};
     } else {
-      children = [
-        animate("stroke", {
+      opts = {fill: color[color.length - 1]};
+      children = ["fill", "stroke"].map(attr => animate(attr, {
           keyTimes,
           dur,
           values: color
-        }),
-        animate("fill", {
-          keyTimes,
-          dur,
-          values: color
-        })
-      ];
+        }));
     }
   } else {
     opts = {fill: color};
   }
-  const tri = svg.path(Object.assign(opts, path), ...children);
-  // const ill = line(centroid, illuminationPoint, "green");
-  // const ext = line(centroid, extinguishPoint, "cyan");
-  // const proj = line(centroid, peak, "orange");
-  // const dist = line(start, peak, "purple");
-  // return [tri, ill, ext, proj, dist].join("");
-  return tri;
+  return svg.path(Object.assign(opts, path), ...children);
 }
 
 function animateCircle({start, end}) {
