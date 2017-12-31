@@ -8,10 +8,11 @@ module.exports = function ({one, two, three, dur, color, keyTimes}) {
   };
 
   if(Array.isArray(color)) {
-    if(color.every((c, i, a) => c === a[0])) {
-      opts = {fill: color[0], stroke: color[0]};
+    const fill = color[0];
+    if(color.every(c => c === fill)) {
+      opts = {fill, stroke: fill};
     } else {
-      opts = {fill: color[color.length - 1]};
+      opts = {fill};
       children = ["fill", "stroke"].map(attr => animate(attr, {
         keyTimes,
         dur,
