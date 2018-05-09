@@ -69,13 +69,34 @@ const lightPath = ((
   distance = compute.distance(start, end),
 ) => ({
   brightness: 75,
-  radius: width*.70,
+  radius: width*.60,
   distance,
   dur,
   end,
   start,
   slope: compute.slope(start, end)
 }))();
+
+const filter = () => {
+  return `<filter id="duotone_peachypink">
+    <!-- <feColorMatrix type="matrix" result="grayscale" values="1 0 0 1 0
+    1 0 0 1 0
+    1 0 0 1 0
+    0 0 0 1 0"></feColorMatrix> -->
+    <feComponentTransfer color-interpolation-filters="sRGB" result="duotone">
+      <!-- siteColor: original homepage ; -->
+      <!-- siteColor: orangePunch_hover; #ec4d13; RGBA(236, 77, 19, 1) -->
+      <feFuncR type="table" tableValues="0.0470588235 0.9254901961"></feFuncR>
+      <feFuncG type="table" tableValues="0.0823529411 0.3019607843"></feFuncG>
+      <feFuncB type="table" tableValues="0.1019607843 0.0745098039"></feFuncB>
+      <!-- siteColor: original homepage heading; hsl(199,35%,31%); rgba(45, 78, 93, 1); -->
+      <!-- siteColor: orangePunch_hover; #ec4d13; RGBA(236, 77, 19, 1) -->
+      <!-- <feFuncR type="table" tableValues="0.1764705882 0.9254901961"></feFuncR>
+      <feFuncG type="table" tableValues="0.3058823529 0.3019607843"></feFuncG>
+      <feFuncB type="table" tableValues="0.3647058824 0.0745098039"></feFuncB> -->
+    </feComponentTransfer>
+  </filter>`
+}
 
 const svgStr = svg.svg(
   {
@@ -84,9 +105,10 @@ const svgStr = svg.svg(
     width,
     height
   },
+  filter(),
   // draw.light(lightPath),
+  animateTriangles(draw.triangle, lightUp.bind(this, lightPath)),
   // draw.line(lightPath.start, lightPath.end, "red"),
-  animateTriangles(draw.triangle, lightUp.bind(this, lightPath))
   // , draw.lightCenter(lightPath)
 );
 
