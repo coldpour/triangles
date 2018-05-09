@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --ext js index.js",
     "test": "nodemon --ext js --exec mocha",
-    "svg": "reload --port 7070 --browser --start-page gems.svg --exts svg"
+    "svg": "reload --port 7070 --browser --start-page index.html --exts svg,html"
   },
   "author": "Mike Holm <coldpour@gmail.com>",
   "license": "ISC",
