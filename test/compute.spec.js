@@ -273,6 +273,24 @@ const tests = [
         result: 3
       }
     ]
+  }, {
+    subject: compute.rgbFromHex,
+    cases: [
+      {
+        name: "works",
+        args: ['#ec4d13'],
+        result: {r: 236, g: 77, b: 19}
+      }
+    ]
+  }, {
+    subject: compute.tableValues,
+    cases: [
+      {
+        name: "works",
+        args: [45, 236],
+        result: "0.1764705882 0.9254901961"
+      }
+    ]
   }
 ];
 

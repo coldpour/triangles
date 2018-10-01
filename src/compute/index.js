@@ -10,10 +10,12 @@ module.exports = {
   padColor: require('./padColor'),
   pointOnLine: require('./pointOnLine'),
   pythagoreanA: require('./pythagoreanA'),
+  rgbFromHex: require('./rgbFromHex'),
   rise: require('./rise'),
   roundPlaces: require('./roundPlaces'),
   run: require('./run'),
   slope: require('./slope'),
   surroundingPoints: require('./surroundingPoints'),
+  tableValues: require('./tableValues'),
   timeMirror: require('./timeMirror')
 };
