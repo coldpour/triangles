@@ -69,7 +69,8 @@ const lightPath = ((
   distance = compute.distance(start, end),
 ) => ({
   brightness: 75,
-  radius: width*.70,
+  // radius: width*1,
+  radius: width*0.5,
   distance,
   dur,
   end,
@@ -84,9 +85,19 @@ const svgStr = svg.svg(
     width,
     height
   },
+  draw.filter('#242c33','#E94314'), // orange = site button_focused; blue = 3 shades darker than darkest floating mineral shade (#344049; fmx3) (according to color-hex.com)
+  // draw.filter('#242c33','#e3a322'), // yellow = mineral yellow; blue = fmx3
+  // draw.filter('#2d4e5d','#ec4d13'), // orange = siteColor orangeBurst; blue = original homepage heading; hsl(199,35%,31%); rgba(45, 78, 93, 1);
+  // draw.filter('#000000','#ffffff'),
+  // draw.filter('#344049','#ec4d13'), // blue = dark shade on floating minerals
+  // draw.filter('#242c33','#ec4d13'), // orange = siteColor orangeBurst; blue = fmx3
+  // draw.filter('#242c33','#CE3C13'), // orange = site button; blue = fmx3
+  // draw.filter('#242c33','#EA6B43'), // orange = mineral orange; blue = fmx3
+  // draw.filter('#242c33','#f8c6b8'), // orange = lighter siteColor orangeBurst; blue = fmx3
+  // draw.filter('#192D36','#ec4d13'), // orange = siteColor orangeBurst; blue = dark triangle from original header
   // draw.light(lightPath),
+  animateTriangles(draw.triangle, lightUp.bind(this, lightPath)),
   // draw.line(lightPath.start, lightPath.end, "red"),
-  animateTriangles(draw.triangle, lightUp.bind(this, lightPath))
   // , draw.lightCenter(lightPath)
 );
 
